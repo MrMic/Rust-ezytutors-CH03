@@ -5,6 +5,7 @@ edition = "2021"
 
 [[bin]]
 name = "basic-server"
+path = "src/basic-server.rs" # Specify the path to your binary source file
 
 [dependencies]
 actix-rt = "2.10.0"
