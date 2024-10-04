@@ -15,7 +15,7 @@ pub async fn health_check_handler() -> HttpResponse {
 // Instantiate & run the HTTP Server
 #[actix_web::main]
 async fn main() -> io::Result<()> {
-    // Construct App & configure routes
+    // Construct App & configure route
     let app = move || App::new().configure(general_routes);
 
     // Start HTTP Server

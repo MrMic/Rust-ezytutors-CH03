@@ -2,11 +2,17 @@
 name = "tutor-nodb"
 version = "0.1.0"
 edition = "2021"
+default-run = "tutor-service"
 
 [[bin]]
 name = "basic-server"
-path = "src/basic-server.rs" # Specify the path to your binary source file
+path = "src/bin/basic-server.rs" # Specify the path to your binary source file
+
+[[bin]]
+name = "tutor-service"
+path = "src/bin/tutor-service.rs"
 
 [dependencies]
+# INFO: Actix web framework & run-time
 actix-rt = "2.10.0"
 actix-web = "4.9.0"
