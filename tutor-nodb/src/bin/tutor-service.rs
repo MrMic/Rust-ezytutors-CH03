@@ -8,6 +8,9 @@ use state::AppState;
 #[path = "../handlers.rs"]
 mod handlers;
 
+#[path = "../models.rs"]
+mod models;
+
 #[path = "../routes.rs"]
 mod routes;
 
@@ -20,6 +23,7 @@ async fn main() -> io::Result<()> {
     let shared_data = web::Data::new(AppState {
         health_check_response: "I'm good. You've already asked me 'I'm good!'".to_string(),
         visit_count: Mutex::new(0),
+        courses: Mutex::new(vec![]),
     });
     let app = move || {
         App::new()
