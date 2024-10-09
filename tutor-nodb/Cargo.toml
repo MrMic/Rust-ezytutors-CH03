@@ -16,3 +16,7 @@ path = "src/bin/tutor-service.rs"
 # INFO: Actix web framework & run-time
 actix-rt = "2.10.0"
 actix-web = "4.9.0"
+
+chrono = { version = "0.4.38", features = ["serde"] }
+# Data Serialization & Deserialization Library
+serde = { version = "1.0.210", features = ["derive"] }
