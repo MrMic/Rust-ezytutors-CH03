@@ -57,7 +57,7 @@ pub async fn get_courses_for_tutor(
         .filter(|course| course.tutor_id == tutor_id)
         .collect::<Vec<Course>>();
 
-    if filtered_courses.len() > 0 {
+    if !filtered_courses.is_empty() {
         HttpResponse::Ok().json(filtered_courses)
     } else {
         HttpResponse::Ok().json("No courses found for tutor".to_string())
@@ -74,6 +74,7 @@ mod tests {
     use actix_web::http::StatusCode;
     use std::sync::Mutex;
 
+    // ______________________________________________________________________
     #[actix_rt::test]
     async fn post_course_test() {
         let course = web::Json(Course {
@@ -90,6 +91,20 @@ mod tests {
         });
 
         let resp = new_course(course, app_state).await;
+        assert_eq!(resp.status(), StatusCode::OK);
+    }
+
+    // ______________________________________________________________________
+    #[actix_rt::test]
+    async fn get_all_courses_success() {
+        let app_state: web::Data<AppState> = web::Data::new(AppState {
+            health_check_response: "I'm good. You've already asked me 'I'm good!'".to_string(),
+            visit_count: Mutex::new(0),
+            courses: Mutex::new(vec![]),
+        });
+        let tutor_id: web::Path<i32> = web::Path::from(1);
+        let resp = get_courses_for_tutor(app_state, tutor_id).await;
+
         assert_eq!(resp.status(), StatusCode::OK);
     }
 }
