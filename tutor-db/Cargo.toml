@@ -2,7 +2,7 @@
 name = "tutor-db"
 version = "0.1.0"
 edition = "2021"
-default-run = "iter2"
+default-run = "iter3"
 
 [[bin]]
 name = "iter1"
@@ -11,6 +11,10 @@ path = "src/bin/iter1.rs"
 [[bin]]
 name = "iter2"
 path = "src/bin/iter2.rs"
+
+[[bin]]
+name = "iter3"
+path = "src/bin/iter3.rs"
 
 [dependencies]
 # Actix web framework & run-time
