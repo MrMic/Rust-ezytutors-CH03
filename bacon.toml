@@ -5,7 +5,7 @@
 # You can also check bacon's own bacon.toml file
 #  as an example: https://github.com/Canop/bacon/blob/main/bacon.toml
 
-default_job = "run-iter3"
+default_job = "run-iter4"
 
 [jobs.check]
 command = ["cargo", "check", "--color", "always"]
@@ -48,7 +48,7 @@ command = [
     "--package",
     "tutor-db",
     "--bin",
-    "iter3",
+    "iter4",
     "--color",
     "always",
     "--",
@@ -57,7 +57,7 @@ command = [
 ]
 need_stdout = true
 
-[jobs.nextest3]
+[jobs.nextest4]
 command = [
     "cargo",
     "nextest",
@@ -65,7 +65,7 @@ command = [
     "--package",
     "tutor-db",
     "--bin",
-    "iter3",
+    "iter4",
     "--color",
     "always",
     "--hide-progress-bar",
@@ -148,6 +148,24 @@ allow_warnings = true
 background = true
 #on_change_strategy = "kill_then_restart"
 
+
+[jobs.run-iter4]
+command = [
+    "cargo",
+    "run",
+    "-p",
+    "tutor-db",
+    "--bin",
+    "iter4",
+    "--color",
+    "always",
+    # put launch parameters for your program behind a `--` separator
+]
+need_stdout = true
+allow_warnings = true
+background = true
+#on_change_strategy = "kill_then_restart"
+
 # This parameterized job runs the example of your choice, as soon
 # as the code compiles.
 # Call it as
@@ -167,5 +185,6 @@ c = "job:clippy-all" # comment this to have 'c' run clippy on only the default t
 1 = "job:run-iter1"
 2 = "job:run-iter2"
 3 = "job:run-iter3"
+4 = "job:run-iter4"
 t = "job:test"
-n = "job:nextest3"
+n = "job:nextest4"
