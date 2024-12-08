@@ -1,5 +1,6 @@
 use sqlx::{postgres::PgPool, types::chrono};
 
+use super::errors::EzyTutorError;
 use crate::models::Course;
 
 // ______________________________________________________________________
