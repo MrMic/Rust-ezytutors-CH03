@@ -1,5 +1,5 @@
-use crate::state::AppState;
 use crate::{db_access::*, models::Course};
+use crate::{errors::EzyTutorError, state::AppState};
 use actix_web::{web, HttpResponse};
 
 // ______________________________________________________________________
@@ -16,7 +16,7 @@ pub async fn health_check_handler(app_state: web::Data<AppState>) -> HttpRespons
 pub async fn get_courses_for_tutor(
     app_state: web::Data<AppState>,
     params: web::Path<(i32,)>,
-) -> HttpResponse {
+) -> Result<HttpResponse, EzyTutorError> {
     let tutor_id = params.0;
     let courses = get_courses_for_tutor_db(&app_state.db, tutor_id).await;
 

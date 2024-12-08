@@ -9,6 +9,8 @@ use routes::*;
 // ______________________________________________________________________
 #[path = "../iter4/db_access.rs"]
 mod db_access;
+#[path = "../iter4/errors.rs"]
+mod errors;
 #[path = "../iter4/handlers.rs"]
 mod handlers;
 #[path = "../iter4/models.rs"]
