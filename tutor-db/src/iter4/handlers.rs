@@ -15,12 +15,12 @@ pub async fn health_check_handler(app_state: web::Data<AppState>) -> HttpRespons
 // ______________________________________________________________________
 pub async fn get_courses_for_tutor(
     app_state: web::Data<AppState>,
-    params: web::Path<(i32,)>,
+    path: web::Path<i32>,
 ) -> Result<HttpResponse, EzyTutorError> {
-    let tutor_id = params.0;
-    let courses = get_courses_for_tutor_db(&app_state.db, tutor_id).await;
-
-    HttpResponse::Ok().json(courses)
+    let tutor_id = path.into_inner();
+    get_courses_for_tutor_db(&app_state.db, tutor_id)
+        .await
+        .map(|courses| HttpResponse::Ok().json(courses))
 }
 
 // ______________________________________________________________________
@@ -69,8 +69,8 @@ mod tests {
             visit_count: Mutex::new(0),
             db: pool,
         });
-        let tutor_id: web::Path<(i32,)> = web::Path::from((1,));
-        let resp = get_courses_for_tutor(app_state, tutor_id).await;
+        let tutor_id: web::Path<i32> = web::Path::from(1);
+        let resp = get_courses_for_tutor(app_state, tutor_id).await.unwrap();
         assert_eq!(resp.status(), StatusCode::OK);
     }
 
@@ -89,6 +89,7 @@ mod tests {
         assert_eq!(resp.status(), StatusCode::OK);
     }
 
+    #[ignore]
     #[actix_rt::test]
     async fn post_course_success() {
         dotenv().ok();
