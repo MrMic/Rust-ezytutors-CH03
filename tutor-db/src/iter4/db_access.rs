@@ -35,23 +35,32 @@ pub async fn get_courses_for_tutor_db(
 }
 
 // ______________________________________________________________________
-pub async fn get_course_details_db(pool: &PgPool, tutor_id: i32, course_id: i32) -> Course {
+pub async fn get_course_details_db(
+    pool: &PgPool,
+    tutor_id: i32,
+    course_id: i32,
+) -> Result<Course, EzyTutorError> {
     // * INFO: Prepare SQL Statement
     let course_row = sqlx::query!(
-        "SELECT tutor_id, course_id, course_name, posted_time FROM ezy_course_c4 WHERE tutor_id = $1 AND course_id = $2",
+        "SELECT tutor_id, course_id, course_name, posted_time FROM ezy_course_c5 WHERE tutor_id = $1 AND course_id = $2",
         tutor_id,
         course_id
     )
     .fetch_one(pool)
-    .await
-    .unwrap();
+    .await;
 
-    // * INFO: Execute query
-    Course {
-        course_id: course_row.course_id,
-        tutor_id: course_row.tutor_id,
-        course_name: course_row.course_name.clone(),
-        posted_time: Some(chrono::NaiveDateTime::from(course_row.posted_time.unwrap())),
+    if let Ok(course_row) = course_row {
+        // * INFO: Execute query
+        Ok(Course {
+            course_id: course_row.course_id,
+            tutor_id: course_row.tutor_id,
+            course_name: course_row.course_name.clone(),
+            posted_time: Some(course_row.posted_time.unwrap()),
+        })
+    } else {
+        Err(EzyTutorError::NotFound(
+            "Course id not found for tutor".into(),
+        ))
     }
 }
 
