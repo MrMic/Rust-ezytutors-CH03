@@ -26,13 +26,14 @@ pub async fn get_courses_for_tutor(
 // ______________________________________________________________________
 pub async fn get_course_details(
     app_state: web::Data<AppState>,
-    params: web::Path<(i32, i32)>,
-) -> HttpResponse {
-    let tutor_id = params.0;
-    let course_id = params.1;
-    let course = get_course_details_db(&app_state.db, tutor_id, course_id).await;
+    path: web::Path<(i32, i32)>,
+) -> Result<HttpResponse, EzyTutorError> {
+    let (tutor_id, course_id) = path.into_inner();
+    get_course_details_db(&app_state.db, tutor_id, course_id)
+        .await
+        .map(|course| HttpResponse::Ok().json(course))
 
-    HttpResponse::Ok().json(course)
+    // HttpResponse::Ok().json(course)
 }
 
 // ______________________________________________________________________
@@ -85,7 +86,7 @@ mod tests {
             db: pool,
         });
         let params: web::Path<(i32, i32)> = web::Path::from((1, 2));
-        let resp = get_course_details(app_state, params).await;
+        let resp = get_course_details(app_state, params).await.unwrap();
         assert_eq!(resp.status(), StatusCode::OK);
     }
 
